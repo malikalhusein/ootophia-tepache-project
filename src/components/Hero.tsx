@@ -1,7 +1,8 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
-import tepacheBottle from "@/assets/tepache-bottle-hero.png";
+import tepacheBottle from "@/assets/tepache-bottle-plastic.png";
+import tepacheLogo from "@/assets/tepache-logo.png";
 
 const Hero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -61,50 +62,25 @@ const Hero = () => {
         style={{ opacity, scale }}
         className="relative z-10 text-center px-6 max-w-5xl mx-auto pt-20"
       >
-        {/* Subheadline */}
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-gold font-semibold text-lg md:text-xl tracking-wide mb-4"
-        >
-          Fermented Probiotic Elixir
-        </motion.p>
-
-        {/* Main Title */}
-        <motion.h1
+        {/* Logo Image */}
+        <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-7xl md:text-9xl font-black text-gold leading-none mb-2"
-          style={{ textShadow: "2px 4px 20px rgba(0,0,0,0.1)" }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="mb-8"
         >
-          tepa
-        </motion.h1>
-        <motion.h1
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          className="text-7xl md:text-9xl font-black text-forest leading-none mb-6"
-        >
-          che
-        </motion.h1>
-
-        {/* Brand */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.7 }}
-          className="text-forest/70 text-lg mb-8"
-        >
-          Brewed by <span className="font-bold text-forest">Ootophia Brewing Labs</span>
-        </motion.p>
+          <img
+            src={tepacheLogo}
+            alt="Tepache - Brewed by Ootophia Brewing Labs"
+            className="w-72 md:w-96 lg:w-[450px] mx-auto"
+          />
+        </motion.div>
 
         {/* Bottle Image */}
         <motion.div
           initial={{ opacity: 0, y: 60 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.6, type: "spring", stiffness: 50 }}
+          transition={{ duration: 1, delay: 0.5, type: "spring", stiffness: 50 }}
           className="relative mx-auto mb-10"
         >
           <motion.img
@@ -112,10 +88,10 @@ const Hero = () => {
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             src={tepacheBottle}
             alt="Tepache Bottle"
-            className="w-48 md:w-64 mx-auto drop-shadow-2xl"
+            className="w-72 md:w-96 lg:w-[500px] mx-auto drop-shadow-2xl"
           />
           {/* Glow Effect */}
-          <div className="absolute inset-0 bg-gold/20 blur-3xl rounded-full -z-10 scale-150" />
+          <div className="absolute inset-0 bg-gold/20 blur-3xl rounded-full -z-10 scale-125" />
         </motion.div>
 
         {/* CTA Button */}
