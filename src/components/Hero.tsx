@@ -1,7 +1,8 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
-import tepacheBottle from "@/assets/tepache-bottle-hero.png";
+import tepacheBottle from "@/assets/tepache-bottle-plastic.png";
+import tepacheLogo from "@/assets/tepache-logo.png";
 
 const Hero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
