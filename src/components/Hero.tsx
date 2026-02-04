@@ -80,7 +80,7 @@ const Hero = () => {
         <motion.div
           initial={{ opacity: 0, y: 60 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.6, type: "spring", stiffness: 50 }}
+          transition={{ duration: 1, delay: 0.5, type: "spring", stiffness: 50 }}
           className="relative mx-auto mb-10"
         >
           <motion.img
@@ -88,10 +88,10 @@ const Hero = () => {
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             src={tepacheBottle}
             alt="Tepache Bottle"
-            className="w-48 md:w-64 mx-auto drop-shadow-2xl"
+            className="w-72 md:w-96 lg:w-[500px] mx-auto drop-shadow-2xl"
           />
           {/* Glow Effect */}
-          <div className="absolute inset-0 bg-gold/20 blur-3xl rounded-full -z-10 scale-150" />
+          <div className="absolute inset-0 bg-gold/20 blur-3xl rounded-full -z-10 scale-125" />
         </motion.div>
 
         {/* CTA Button */}
