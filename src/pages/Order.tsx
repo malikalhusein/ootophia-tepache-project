@@ -6,7 +6,9 @@ import { ArrowLeft, Send, ShoppingBag, Tag } from "lucide-react";
  import Navbar from "@/components/Navbar";
  import Footer from "@/components/Footer";
  
-const PRICE_PER_BOTTLE = 25000; // Rp 25.000 per botol
+const PRICE_REGULAR = 15000; // Rp 15.000 per botol
+const PRICE_BULK = 12000; // Rp 12.000 per botol (min 5 botol)
+const BULK_MINIMUM = 5;
 
 const formatCurrency = (amount: number) => {
   return new Intl.NumberFormat("id-ID", {
@@ -33,7 +35,11 @@ const formatCurrency = (amount: number) => {
    });
    const [errors, setErrors] = useState<Partial<Record<keyof OrderData, string>>>({});
  
-  const totalPrice = formData.quantity * PRICE_PER_BOTTLE;
+  const pricePerBottle = formData.quantity >= BULK_MINIMUM ? PRICE_BULK : PRICE_REGULAR;
+  const totalPrice = formData.quantity * pricePerBottle;
+  const savings = formData.quantity >= BULK_MINIMUM 
+    ? (PRICE_REGULAR - PRICE_BULK) * formData.quantity 
+    : 0;
 
    const handleChange = (field: keyof OrderData, value: string | number) => {
      setFormData((prev) => ({ ...prev, [field]: value }));
@@ -62,7 +68,8 @@ const formatCurrency = (amount: number) => {
  Nama: ${formData.name.trim()}
  Alamat CoD: ${formData.address.trim()}
 Jumlah: ${formData.quantity} botol
-Total: ${formatCurrency(totalPrice)}`;
+Harga: ${formatCurrency(pricePerBottle)}/botol
+Total: ${formatCurrency(totalPrice)}${savings > 0 ? ` (Hemat ${formatCurrency(savings)})` : ""}`;
  
      const encodedMessage = encodeURIComponent(message);
      const whatsappUrl = `https://api.whatsapp.com/send?phone=6285156083920&text=${encodedMessage}`;
@@ -106,12 +113,17 @@ Total: ${formatCurrency(totalPrice)}`;
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.05 }}
-            className="glass-card rounded-2xl p-4 mb-6 flex items-center gap-3"
+            className="glass-card rounded-2xl p-4 mb-6"
           >
-            <Tag className="w-5 h-5 text-gold" />
-            <p className="text-forest font-medium">
-              Harga: <span className="text-gold font-bold">{formatCurrency(PRICE_PER_BOTTLE)}</span> per botol
-            </p>
+            <div className="flex items-center gap-3 mb-2">
+              <Tag className="w-5 h-5 text-gold" />
+              <p className="text-forest font-medium">
+                Harga: <span className="text-gold font-bold">{formatCurrency(PRICE_REGULAR)}</span> per botol
+              </p>
+            </div>
+            <div className="bg-green-100 text-green-800 rounded-lg px-3 py-2 text-sm font-medium">
+              🎉 Beli {BULK_MINIMUM}+ botol, harga hanya <span className="font-bold">{formatCurrency(PRICE_BULK)}</span>/botol!
+            </div>
           </motion.div>
  
            {/* Form */}
@@ -204,8 +216,21 @@ Total: ${formatCurrency(totalPrice)}`;
                   <span className="text-2xl font-black text-forest">{formatCurrency(totalPrice)}</span>
                 </div>
                 <p className="text-forest/50 text-sm mt-1">
-                  {formData.quantity} botol × {formatCurrency(PRICE_PER_BOTTLE)}
+                  {formData.quantity} botol × {formatCurrency(pricePerBottle)}
+                  {formData.quantity >= BULK_MINIMUM && (
+                    <span className="text-green-600 font-medium"> (harga grosir)</span>
+                  )}
                 </p>
+                {savings > 0 && (
+                  <p className="text-green-600 text-sm font-semibold mt-1">
+                    ✨ Anda hemat {formatCurrency(savings)}!
+                  </p>
+                )}
+                {formData.quantity < BULK_MINIMUM && (
+                  <p className="text-gold text-sm mt-2">
+                    💡 Tambah {BULK_MINIMUM - formData.quantity} botol lagi untuk harga grosir!
+                  </p>
+                )}
               </div>
 
                {/* Submit Button */}
