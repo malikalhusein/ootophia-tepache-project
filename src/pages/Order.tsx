@@ -1,11 +1,22 @@
  import { useState } from "react";
  import { motion } from "framer-motion";
- import { ArrowLeft, Send, ShoppingBag } from "lucide-react";
+import { ArrowLeft, Send, ShoppingBag, Tag } from "lucide-react";
  import { Link } from "react-router-dom";
  import { z } from "zod";
  import Navbar from "@/components/Navbar";
  import Footer from "@/components/Footer";
  
+const PRICE_PER_BOTTLE = 25000; // Rp 25.000 per botol
+
+const formatCurrency = (amount: number) => {
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(amount);
+};
+
  const orderSchema = z.object({
    name: z.string().trim().min(1, "Nama harus diisi").max(100, "Nama maksimal 100 karakter"),
    address: z.string().trim().min(1, "Alamat harus diisi").max(500, "Alamat maksimal 500 karakter"),
@@ -22,6 +33,8 @@
    });
    const [errors, setErrors] = useState<Partial<Record<keyof OrderData, string>>>({});
  
+  const totalPrice = formData.quantity * PRICE_PER_BOTTLE;
+
    const handleChange = (field: keyof OrderData, value: string | number) => {
      setFormData((prev) => ({ ...prev, [field]: value }));
      // Clear error when user starts typing
@@ -48,7 +61,8 @@
  
  Nama: ${formData.name.trim()}
  Alamat CoD: ${formData.address.trim()}
- Jumlah: ${formData.quantity} botol`;
+Jumlah: ${formData.quantity} botol
+Total: ${formatCurrency(totalPrice)}`;
  
      const encodedMessage = encodeURIComponent(message);
      const whatsappUrl = `https://api.whatsapp.com/send?phone=6285156083920&text=${encodedMessage}`;
@@ -86,6 +100,19 @@
                </div>
              </div>
            </motion.div>
+
+          {/* Pricing Info */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.05 }}
+            className="glass-card rounded-2xl p-4 mb-6 flex items-center gap-3"
+          >
+            <Tag className="w-5 h-5 text-gold" />
+            <p className="text-forest font-medium">
+              Harga: <span className="text-gold font-bold">{formatCurrency(PRICE_PER_BOTTLE)}</span> per botol
+            </p>
+          </motion.div>
  
            {/* Form */}
            <motion.div
@@ -170,6 +197,17 @@
                  )}
                </div>
  
+              {/* Total Price */}
+              <div className="bg-forest/5 rounded-xl p-4 border border-forest/10">
+                <div className="flex items-center justify-between">
+                  <span className="text-forest/70 font-medium">Total Harga:</span>
+                  <span className="text-2xl font-black text-forest">{formatCurrency(totalPrice)}</span>
+                </div>
+                <p className="text-forest/50 text-sm mt-1">
+                  {formData.quantity} botol × {formatCurrency(PRICE_PER_BOTTLE)}
+                </p>
+              </div>
+
                {/* Submit Button */}
                <motion.button
                  whileHover={{ scale: 1.02 }}
