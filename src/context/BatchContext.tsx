@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 export interface BatchData {
   batchCode: string;
@@ -25,13 +25,32 @@ const BatchContext = createContext<BatchContextType | undefined>(undefined);
 
 export const BatchProvider = ({ children }: { children: ReactNode }) => {
   const [batchData, setBatchData] = useState<BatchData>(() => {
-    const saved = localStorage.getItem("tepache-batch-data");
-    return saved ? JSON.parse(saved) : defaultBatchData;
+    try {
+      const saved = localStorage.getItem("tepache-batch-data");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        // Validate that all required fields exist
+        if (parsed.batchCode && parsed.fermentationStarted && parsed.harvestDate && parsed.bestBefore && parsed.status) {
+          return parsed;
+        }
+      }
+    } catch (error) {
+      console.error("Error loading batch data from localStorage:", error);
+    }
+    return defaultBatchData;
   });
+
+  // Sync to localStorage whenever batchData changes
+  useEffect(() => {
+    try {
+      localStorage.setItem("tepache-batch-data", JSON.stringify(batchData));
+    } catch (error) {
+      console.error("Error saving batch data to localStorage:", error);
+    }
+  }, [batchData]);
 
   const updateBatchData = (data: BatchData) => {
     setBatchData(data);
-    localStorage.setItem("tepache-batch-data", JSON.stringify(data));
   };
 
   return (

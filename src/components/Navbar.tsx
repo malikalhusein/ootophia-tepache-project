@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
+import { ShoppingBag } from "lucide-react";
 
 const Navbar = () => {
   const location = useLocation();
@@ -45,6 +46,13 @@ const Navbar = () => {
               }`}
             >
               Batch Tracker
+            </Link>
+            <Link
+              to="/order"
+              className="px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 bg-gold hover:bg-gold-light text-forest flex items-center gap-2"
+            >
+              <ShoppingBag className="w-4 h-4" />
+              <span className="hidden sm:inline">Pesan</span>
             </Link>
           </div>
         </div>

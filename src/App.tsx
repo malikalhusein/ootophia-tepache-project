@@ -7,6 +7,7 @@ import { BatchProvider } from "@/context/BatchContext";
 import Index from "./pages/Index";
 import BatchTracker from "./pages/BatchTracker";
 import Admin from "./pages/Admin";
+import Order from "./pages/Order";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +23,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/batch-tracker" element={<BatchTracker />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/order" element={<Order />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
